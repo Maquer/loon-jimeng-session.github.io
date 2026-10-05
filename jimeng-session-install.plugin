@@ -5,8 +5,9 @@
 #!icon=https://www.jianying.com/favicon.ico
 
 [MITM]
-hostname = jimeng.jianying.com, *.jianying.com, *.bytedance.com
+hostname = jimeng.jianying.com, *.jianying.com, *.bytedance.com, *.douyin.com
 
 [Script]
 http-request ^https?://.*\.jianying\.com script-path=jimeng-session.lua,tag=即梦Session抓取
 http-request ^https?://.*\.bytedance\.com script-path=jimeng-session.lua,tag=即梦Session抓取
+http-request ^https?://.*\.douyin\.com script-path=jimeng-session.lua,tag=即梦Session抓取
