@@ -11,10 +11,8 @@ hostname=jimeng.jianying.com,*.jianying.com
 http-request ^https?://.*\.jianying\.com script-path=jimeng-session.lua,tag=即梦Session抓取
 
 -- ============================================
--- 以下内容为自动安装的 Lua 脚本（jimeng-session.lua）
--- Loon 会自动提取并保存到此文件
+-- Lua 脚本内容（Loon 会自动提取此部分）
 -- ============================================
--- #LUA#
 BARK_KEY = "Av8DkzMpStcsmsW3KfqEMc"
 
 local function urlencode(str)
@@ -46,4 +44,3 @@ if sessionId and sessionId ~= "" then
 else
     notify("❓ 未找到", "URL: " .. reqUrl .. "\nCookie 长度: " .. #cookieStr)
 end
--- #LUA#
