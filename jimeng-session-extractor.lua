@@ -3,6 +3,16 @@
 -- 修复：使用 http-request 从请求头中提取 Cookie sessionid
 
 -- ============================================
+-- Loon 脚本配置
+-- ============================================
+
+#!name=即梦Session抓取
+#!desc=自动抓取即梦 AI 创作平台的 Session ID，通过 Bark 推送通知
+#!author=小蒋
+#!homepage=https://github.com/Maquer/loon-jimeng-session
+#!icon=https://www.jianying.com/favicon.ico
+
+-- ============================================
 -- 配置区
 -- ============================================
 
